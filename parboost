@@ -1,0 +1,17 @@
+## Run parboost on a cluster 
+data(iris)
+library(parallel)
+cl <- makeCluster(2)
+parboost_model <- parboost(cluster_object = cl, data = iris,
+nsplits = 2, formula = y ~ .,
+baselearner="bbs", postprocessing = "glm",
+control = boost_control(mstop=10))
+stopCluster(cl)
+print(parboost_model)
+summary(parboost_model)
+head(predict(parboost_model))
+
+## Run parboost serially for testing/debugging purposes
+parboost_model <- parboost(data = iris, nsplits = 2, formula
+= y ~ ., baselearner="bbs", postprocessing = "glm", control =
+boost_control(mstop=10))
